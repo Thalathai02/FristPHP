@@ -1,5 +1,7 @@
 <?php
+
 session_start();
+include('server.php'); 
 
 if (!isset($_SESSION['username'])) {
     $_SESSION['msg'] = "You must log in first";
@@ -12,7 +14,7 @@ if ($_SESSION['username'] !== "adminA") {
 if (isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['username']);
-    unset($_SESSION['Img_Profile']);
+    unset($_SESSION['profile']);
     header('location: login.php');
 }
 
@@ -36,11 +38,11 @@ if (isset($_GET['logout'])) {
     <nav class="navbar navbar-dark bg-dark nav">
         <a class="navbar-brand">Admin</a>
         <div class="form-inline">
-        <a href="#" class="mr-sm-2">
-            <img src="<?php echo "img/IMG_7588.jpg"; ?>" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-            Welcome <?php echo $_SESSION['username']; ?>
-        </a>
-        <a class="navbar-brand my-2 my-sm-0" href="index.php?logout='1'" style="color: red;">Logout</a>
+            <a href="#" class="mr-sm-2">
+                <img src="<?php echo "img/" . $_SESSION['profile']; ?>" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+                Welcome <?php echo $_SESSION['username']; ?>
+            </a>
+            <a class="navbar-brand my-2 my-sm-0" href="index.php?logout='1'" style="color: red;">Logout</a>
         </div>
     </nav>
 
