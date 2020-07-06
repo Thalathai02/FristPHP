@@ -14,12 +14,12 @@ if (isset($_POST['reg_user'])) {
     $password_1 = mysqli_real_escape_string($conn, $_POST['password_1']);
     $password_2 = mysqli_real_escape_string($conn, $_POST['password_2']);
     $errors = array();
-    $uploads_dir = "img/$Namepic";
-    $temppic = $_FILES['image']['tmp_name'];
+    
+    $temppic = $_FILES["image"]["tmp_name"];
     // basename() may prevent filesystem traversal attacks;
     // further validation/sanitation of the filename may be appropriate
-    $Namepic = $_FILES['image']['name'];
-
+    $Namepic = $_FILES["image"]["name"];
+    $uploads_dir = "img/$Namepic";
 
     if (empty($username)) {
         array_push($errors, "Username is required");
@@ -50,11 +50,12 @@ if (isset($_POST['reg_user'])) {
     }
 
     if (count($errors) == 0) {
+        move_uploaded_file($temppic, $uploads_dir);
         $password = md5($password_1);
         $sql = "INSERT INTO user (username, email, password,Img) VALUES ('$username', '$email', '$password','$Namepic')";
         mysqli_query($conn, $sql);
 
-        move_uploaded_file($_FILES['image']['tmp_name'], $uploads_dir);
+        
         $_SESSION['username'] = $username;
         $_SESSION['success'] = "You are now logged in";
         header('location: login.php');
