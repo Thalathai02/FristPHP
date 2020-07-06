@@ -7,6 +7,6 @@ CREATE TABLE `user` (
   username varchar(100) NOT NULL,
   email varchar(100) NOT NULL,
   password varchar(100) NOT NULL,
-  Img TEXT NOT NULL,
+  Img TEXT NOT NULL
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

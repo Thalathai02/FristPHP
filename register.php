@@ -50,7 +50,8 @@ include('server.php');
             <input type="password" name="password_2" required>
         </div>
         <div class="input-group">
-                <input type="file" name="image" >
+            <label for="image">Profile</label>
+            <input type="file" name="image" required>
         </div>
         <div class="input-group">
             <button type="submit" name="reg_user" class="btn">Register</button>

@@ -14,9 +14,12 @@ if (isset($_POST['reg_user'])) {
     $password_1 = mysqli_real_escape_string($conn, $_POST['password_1']);
     $password_2 = mysqli_real_escape_string($conn, $_POST['password_2']);
     $errors = array();
-    $Namepic = $_FILES["image"]["name"];
-    $temppic = $_FILES["image"]["tmp_name"];
-    $file_destination = "img/$Namepic";
+    $uploads_dir = "img/$Namepic";
+    $temppic = $_FILES['image']['tmp_name'];
+    // basename() may prevent filesystem traversal attacks;
+    // further validation/sanitation of the filename may be appropriate
+    $Namepic = $_FILES['image']['name'];
+
 
     if (empty($username)) {
         array_push($errors, "Username is required");
@@ -27,10 +30,12 @@ if (isset($_POST['reg_user'])) {
     if (empty($password_1)) {
         array_push($errors, "Password is required");
     }
-    if ($password_1 != $password_2) {
-        array_push($errors, "The two passwords do not match");
+    if (empty($Namepic)) {
+        array_push($errors, "Profile is required");
     }
-
+    if (empty($password_1)) {
+        array_push($errors, "Password is required");
+    }
     $user_check_query = "SELECT * FROM user WHERE username = '$username' OR email = '$email' LIMIT 1";
     $query = mysqli_query($conn, $user_check_query);
     $result = mysqli_fetch_assoc($query);
@@ -45,12 +50,11 @@ if (isset($_POST['reg_user'])) {
     }
 
     if (count($errors) == 0) {
-        move_uploaded_file($temppic, $file_destination);
         $password = md5($password_1);
         $sql = "INSERT INTO user (username, email, password,Img) VALUES ('$username', '$email', '$password','$Namepic')";
         mysqli_query($conn, $sql);
-        
 
+        move_uploaded_file($_FILES['image']['tmp_name'], $uploads_dir);
         $_SESSION['username'] = $username;
         $_SESSION['success'] = "You are now logged in";
         header('location: login.php');
