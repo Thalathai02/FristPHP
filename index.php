@@ -41,6 +41,30 @@ if (isset($_GET['logout'])) {
         </div>
     </nav>
 
+    
+    <form class="container" style="max-width: 40rem;">
+  <div class="form-group">
+    <div class="row-1"><label class="col-6" for="">สร้างโพสต์</label>
+    <textarea class="form-control" rows="3"></textarea>
+    </div><br>
+    <div class="row">
+            <input type="file" name="image_Post" class="col-9">
+            <button type="submit"class="btn btn-primary col-2" name="submit_Post">Primary</button>
+    </div>
+   
+  </div>
+</form>
+  
+<br>
+<div class="container">
+<div class="card mb-3" style="max-width: 70rem;">
+  <div class="card-header bg-primary text-white">ชื่อ</div>
+  <div class="card-body row">
+  <img src="<?php echo "img/" . $_SESSION['profile']; ?>" class="col-4" width="200" height="200" class="d-inline-block align-top" alt="" loading="lazy">
+    <p class="col card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+</div>
 
 
 </body>

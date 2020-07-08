@@ -46,7 +46,7 @@ if (isset($_GET['logout'])) {
         </div>
     </nav>
 
-
+    
 </body>
 
 </html>
