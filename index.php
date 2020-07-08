@@ -31,7 +31,7 @@ if (isset($_GET['logout'])) {
 
 <body>
     <nav class="navbar navbar-dark bg-dark nav">
-        <a class="navbar-brand">Admin</a>
+        <a class="navbar-brand">หน้าแรก</a>
         <div class="form-inline">
             <a href="#" class="mr-sm-2">
                 <img src="<?php echo "img/" . $_SESSION['profile']; ?>" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
