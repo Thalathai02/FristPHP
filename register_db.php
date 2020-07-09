@@ -13,13 +13,12 @@ if (isset($_POST['reg_user'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password_1 = mysqli_real_escape_string($conn, $_POST['password_1']);
     $password_2 = mysqli_real_escape_string($conn, $_POST['password_2']);
-    $errors = array();
-    
+    $errors = array();   
     $temppic = $_FILES["image"]["tmp_name"];
-    // basename() may prevent filesystem traversal attacks;
-    // further validation/sanitation of the filename may be appropriate
     $Namepic = $_FILES["image"]["name"];
     $uploads_dir = "img/$Namepic";
+    $valid_extensions = array('jpeg', 'jpg', 'png', 'gif');
+    $imgExt = strtolower(pathinfo($Namepic,PATHINFO_EXTENSION));
 
     if (empty($username)) {
         array_push($errors, "Username is required");
@@ -50,15 +49,22 @@ if (isset($_POST['reg_user'])) {
     }
 
     if (count($errors) == 0) {
-        move_uploaded_file($temppic, $uploads_dir);
+        if(in_array($imgExt, $valid_extensions)){
+            move_uploaded_file($temppic, $uploads_dir);
         $password = md5($password_1);
         $sql = "INSERT INTO user (username, email, password,Img) VALUES ('$username', '$email', '$password','$Namepic')";
         mysqli_query($conn, $sql);
-
-        
         $_SESSION['username'] = $username;
         $_SESSION['success'] = "You are now logged in";
         header('location: login.php');
+        }
+        else{
+            array_push($errors, "Image already exists");
+            $_SESSION['error'] = "Image already exists";
+            header("location: register.php");
+
+        }
+        
     } else {
         array_push($errors, "Username or Email already exists");
         $_SESSION['error'] = "Username or Email already exists";

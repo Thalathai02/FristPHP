@@ -1,6 +1,6 @@
 <?php
-session_start();
 
+session_start();
 if (!isset($_SESSION['username'])) {
     $_SESSION['msg'] = "You must log in first";
     header('location: login.php');
@@ -12,7 +12,7 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['Img_Profile']);
     header('location: login.php');
 }
-
+include('server.php');
 ?>
 
 <!DOCTYPE html>
@@ -42,31 +42,59 @@ if (isset($_GET['logout'])) {
     </nav>
 
     
-    <form class="container" style="max-width: 40rem;">
+    <form class="container" style="max-width: 40rem;" action="index_DB.php" method="post" enctype="multipart/form-data">
+    <?php include('errors.php'); ?>
+        <?php if (isset($_SESSION['error'])) : ?>
+            <div class="error">
+                <h3>
+                    <?php
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    ?>
+                </h3>
+            </div>
+        <?php endif ?>
   <div class="form-group">
     <div class="row-1"><label class="col-6" for="">สร้างโพสต์</label>
-    <textarea class="form-control" rows="3"></textarea>
+    <textarea class="form-control" rows="3" name="text_Post"></textarea>
     </div><br>
     <div class="row">
             <input type="file" name="image_Post" class="col-9">
-            <button type="submit"class="btn btn-primary col-2" name="submit_Post">Primary</button>
+            <button type="submit"class="btn btn-primary col-2" name="submit_Post">โพสต์</button>
     </div>
    
   </div>
 </form>
-  
+<?php 
+$query_Post = "SELECT * FROM Post  ORDER BY id DESC";
+$result_Post = mysqli_query($conn, $query_Post);
+while ($Post = mysqli_fetch_array($result_Post)) {
+    $_SESSION['post_id'] = $Post['id'];
+    $username_post = $Post['username'];
+    $_SESSION['text_post'] = $Post['text_post'];
+    $_SESSION['Img_post'] = $Post['Img_post'];
+    $_SESSION['Date_post'] = $Post['post_date'];
+
+    $query_Profile_Img = "SELECT * FROM user  WHERE username = '$username_post' ";
+$result_Profile_Img = mysqli_query($conn, $query_Profile_Img);
+while( $Profile_Img_post = mysqli_fetch_array($result_Profile_Img)){
+    $face_user = $Profile_Img_post['Img'];
+}
+?>
+
 <br>
 <div class="container">
 <div class="card mb-3" style="max-width: 70rem;">
-  <div class="card-header bg-primary text-white">ชื่อ</div>
+  <div class="card-header bg-primary text-white">
+  <img src="<?php echo "img_post/" . $face_user; ?>" class="col-1" width="10" height="50" class="d-inline-block align-top" alt="" loading="lazy">
+  <?php echo $username_post ; ?></div>
   <div class="card-body row">
-  <img src="<?php echo "img/" . $_SESSION['profile']; ?>" class="col-4" width="200" height="200" class="d-inline-block align-top" alt="" loading="lazy">
-    <p class="col card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  <img src="<?php echo "img_post/" . $_SESSION['Img_post']; ?>" class="col-4" width="200" height="200" class="d-inline-block align-top" alt="" loading="lazy">
+    <p class="col card-text"><?php echo $_SESSION['text_post'] ?></p>
   </div>
 </div>
 </div>
-
-
+<?php } ?>
 </body>
 
 </html>
