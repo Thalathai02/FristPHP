@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include('server.php'); 
+include('server.php');
 
 if (!isset($_SESSION['username'])) {
     $_SESSION['msg'] = "You must log in first";
@@ -36,7 +36,7 @@ if (isset($_GET['logout'])) {
 
 <body>
     <nav class="navbar navbar-dark bg-dark nav">
-        <a class="navbar-brand">Admin</a>
+        <a class="navbar-brand col-1">Admin</a>
         <div class="form-inline">
             <a href="#" class="mr-sm-2">
                 <img src="<?php echo "img/" . $_SESSION['profile']; ?>" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
@@ -46,6 +46,14 @@ if (isset($_GET['logout'])) {
         </div>
     </nav>
 
+    <div class="container">
+    <div class="content__grid">
+                <h3><a href="index.php">Index page</a></h3>
+                <h3><a href="view_posts.php">View Posts</a></h3>
+                <h3><a href="insert_post.php">Insert Post</a></h3>
+            </div>
+        </div>
+    </div>
     
 </body>
 

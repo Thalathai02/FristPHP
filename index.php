@@ -65,7 +65,7 @@ include('server.php');
    
   </div>
 </form>
-<?php 
+<?php
 $query_Post = "SELECT * FROM Post  ORDER BY id DESC";
 $result_Post = mysqli_query($conn, $query_Post);
 while ($Post = mysqli_fetch_array($result_Post)) {
@@ -76,13 +76,37 @@ while ($Post = mysqli_fetch_array($result_Post)) {
     $_SESSION['Date_post'] = $Post['post_date'];
 
     $query_Profile_Img = "SELECT * FROM user  WHERE username = '$username_post' ";
-$result_Profile_Img = mysqli_query($conn, $query_Profile_Img);
-while( $Profile_Img_post = mysqli_fetch_array($result_Profile_Img)){
-    $face_user = $Profile_Img_post['Img'];
-}
-?>
-
+    $result_Profile_Img = mysqli_query($conn, $query_Profile_Img);
+    while ($Profile_Img_post = mysqli_fetch_array($result_Profile_Img)) {
+        $face_user = $Profile_Img_post['Img'];
+    } ?>
+<?php if ($username_post == $_SESSION['username']) :?>
 <br>
+<div class="container">
+<div class="card mb-3 row " style="max-width: 70rem;">
+  <div class="card-header bg-primary text-white row  justify-content-between ">
+  <img src="<?php echo "img_post/" . $face_user; ?>" class="col-1 align-self-start " width="10" height="50" class="d-inline-block align-top" alt="" loading="lazy">
+  <div class='col-3'><?php echo $username_post ; ?></div>
+  <div class="col-7"></div>
+  <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   . . .
+  </button>
+  <div class="dropdown-menu" aria-labelledby="">
+    <a class="dropdown-item " href="#">Edit</a>
+    <a class="dropdown-item" href="#">Del</a>
+  </div>
+</div>
+</div>
+  <div class="card-body row">
+  <img src="<?php echo "img_post/" . $_SESSION['Img_post']; ?>" class="col-4" width="200" height="200" class="d-inline-block align-top" alt="" loading="lazy">
+    <p class="col card-text"><?php echo $_SESSION['text_post'] ?></p>
+  </div>
+</div>
+</div>
+<?php endif ?>
+<?php if ($username_post != $_SESSION['username']) :?>
+    <br>
 <div class="container">
 <div class="card mb-3" style="max-width: 70rem;">
   <div class="card-header bg-primary text-white">
@@ -94,7 +118,9 @@ while( $Profile_Img_post = mysqli_fetch_array($result_Profile_Img)){
   </div>
 </div>
 </div>
-<?php } ?>
+<?php endif ?>
+<?php
+} ?>
 </body>
 
 </html>
